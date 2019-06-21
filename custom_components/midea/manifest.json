@@ -1,0 +1,8 @@
+{
+  "domain": "midea_ac",
+  "name": "Midea AC",
+  "documentation": "https://github.com/NeoAcheron/midea-ac-py",
+  "dependencies": [],
+  "codeowners": [],
+  "requirements": ["wakeonlan"]
+}
