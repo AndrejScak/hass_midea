@@ -4,5 +4,5 @@
   "documentation": "https://github.com/NeoAcheron/midea-ac-py",
   "dependencies": [],
   "codeowners": [],
-  "requirements": ["wakeonlan"]
+  "requirements": ["wakeonlan", "midea==0.1.7"]
 }
