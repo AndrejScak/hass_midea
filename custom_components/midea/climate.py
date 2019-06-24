@@ -11,12 +11,14 @@ import logging
 import voluptuous as vol
 
 import homeassistant.helpers.config_validation as cv
-from homeassistant.components.climate import ClimateDevice, PLATFORM_SCHEMA
-from homeassistant.components.climate.const import (
+from homeassistant.components.climate import (
+    ClimateDevice,
     SUPPORT_TARGET_TEMPERATURE, SUPPORT_TARGET_TEMPERATURE_HIGH, SUPPORT_TARGET_TEMPERATURE_LOW,
     SUPPORT_AWAY_MODE, SUPPORT_FAN_MODE, SUPPORT_OPERATION_MODE, SUPPORT_SWING_MODE,
-    SUPPORT_ON_OFF)
+    SUPPORT_ON_OFF, PLATFORM_SCHEMA)
 from homeassistant.const import CONF_USERNAME, CONF_PASSWORD, TEMP_CELSIUS, TEMP_FAHRENHEIT, ATTR_TEMPERATURE
+from homeassistant.util import Throttle
+from datetime import timedelta
 
 REQUIREMENTS = ['midea==0.1.7', 'pycryptodome==3.7.0']
 VERSION = '0.1.7'
@@ -26,6 +28,7 @@ _LOGGER = logging.getLogger(__name__)
 CONF_APP_KEY = 'app_key'
 CONF_TEMP_STEP = 'temp_step'
 CONF_INCLUDE_OFF_AS_STATE = 'include_off_as_state'
+SCAN_INTERVAL = timedelta(seconds=120)
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Required(CONF_APP_KEY): cv.string,
@@ -87,7 +90,8 @@ class MideaClimateACDevice(ClimateDevice):
         self._include_off_as_state = include_off_as_state
 
         self._changed = False
-
+    #test throttle..
+    @Throttle(SCAN_INTERVAL)
     async def async_update(self):
         """Retrieve latest state from the appliance if no changes made, 
         otherwise update the remote device state."""
